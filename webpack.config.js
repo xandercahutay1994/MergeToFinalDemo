@@ -1,5 +1,6 @@
 const path = require('path'); // manipulate file path
 const hwp = require('html-webpack-plugin'); // create INDEX.HTML file, simplifies creation of HTML to serve bundles
+const React = require('react');
 
 module.exports = {
     entry: './src/index.js', // react entry file, this will be compiled including import components to DIST folder
@@ -29,6 +30,7 @@ module.exports = {
         new hwp({
             template: './src/index.html' // but I want it to be index.html
         }) // this will be the template reference
+        
     ]
 }
 

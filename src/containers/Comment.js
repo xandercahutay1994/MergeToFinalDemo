@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import CommentLists from "../components/CommentLists"
+import CommentFilter from "../components/CommentFilter"
 import axios from "axios";
 import { FETCH_COMMENTS_URL } from "../api";
 
@@ -42,18 +43,6 @@ class Comment extends Component {
             console.log(e)
         }
     }
-
-    
-    commentLists = () => {
-        const { allComments } = this.state
-
-        return allComments.map(lists => 
-            <div key={ lists.id }>
-                <h5 className="text-primary">{ lists.email }</h5>
-                <p>{ lists.body }</p> 
-            </div>  
-        )
-    }
     
     submit = (e) => {
         e.preventDefault();
@@ -87,7 +76,7 @@ class Comment extends Component {
 
     render(){
         const { allComments, isFetching, searchEmail, filterComment } = this.state;
-        console.log('render')
+
         return(
             <div className="container mt-5">
                 <h1 className="text-center"> All Comments </h1>
@@ -105,15 +94,15 @@ class Comment extends Component {
                 </form>
 
                 <div className="mt-5">
-                    
                     {
                         !isFetching ?
-                        <h2 className="text-center"><i className="fa fa-spinner"></i> Loading...</h2>
+                            <h2 className="text-center"><i className="fa fa-spinner"></i> Loading...</h2>
                         :
                             !filterComment ?
-                                this.commentLists()
+                                <CommentLists commentLists={allComments}/>
                             :
-                                this.renderCommentDetail()
+
+                                <CommentFilter commentFilter={allComments} email={searchEmail}/>
 
                             // <CommentLists commentLists={allComments}/>
                     } 

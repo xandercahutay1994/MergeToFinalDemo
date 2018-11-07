@@ -1,8 +1,19 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { FETCH_POSTS_URL } from "../api";
+import { 
+    FETCH_POSTS_URL,
+    FETCH_SPEC_COMMENT_URL 
+} from "../api";
 import BlogLists from "../components/BlogLists"
 import BLogForm from "./BlogForm"
+import Navigation from "../components/Navigation"
+import Login from "./Login"
+import {
+    BrowserRouter as Router,
+    Link,
+    Route
+} from "react-router-dom"
+import Modal from "react-responsive-modal"
 
 class Blogs extends Component{
     
@@ -13,7 +24,9 @@ class Blogs extends Component{
             isFetching: false,
             title: '',
             body: '',
-            id: 101
+            id: 101,
+            blogComments: [],
+            openModal: false
         }
     }
 
@@ -52,8 +65,46 @@ class Blogs extends Component{
         }))
     }
 
+    getComments = async(id) => {
+        const result = await axios(FETCH_SPEC_COMMENT_URL + id);
+        const response = result.data;
+
+        this.setState({ blogComments: response, openModal: true })
+    }
+
+    closeModal = () => {
+        this.setState({ openModal: false })
+    }
+
+    renderModal = (blogComments) => {
+        return (
+            <Modal open={this.state.openModal} onClose={()=>this.closeModal()}>
+                {
+                    blogComments.map(details => 
+                        <div key={details.id} className="justify-content-center mt-3 p-2">
+                            <div className="row">
+                                <h5 className="col-md-2"> Email </h5>
+                                <span className="form-control col-md-8">{details.email} </span>
+                            </div>
+                            <div className="row mt-3">
+                                <h5 className="col-md-2"> Name </h5>
+                                <span className="form-control col-md-8">{details.name} </span>
+                            </div>
+                            <div className="row mt-3">
+                                <h5 className="col-md-2"> Name </h5>
+                                <span className="form-control col-md-8">{details.body} </span>
+                            </div>
+                            <hr/>
+                        </div>
+                    )
+                }
+               <a href="#" className="offset-md-8 mt-3 btn btn-danger" onClick={()=>this.closeModal()}> Close </a>
+            </Modal>
+        )
+    }
+
     render(){
-        const { allBlogPosts, isFetching } = this.state;
+        const { allBlogPosts, isFetching, blogComments } = this.state;
 
         return (
             <div className="mt-5">
@@ -67,12 +118,14 @@ class Blogs extends Component{
                     !isFetching ?
                         <h2 className="text-center">
                             <i className="fa fa-spinner"></i> Loading...
-                    </h2>
+                        </h2> 
                     :
                     <BlogLists 
                         blogLists={allBlogPosts}
+                        details={this.getComments}
                     />
                 }
+                {this.renderModal(blogComments)}
             </div>
         )
     }

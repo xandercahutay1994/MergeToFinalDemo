@@ -12,3 +12,4 @@ export const FETCH_POSTS_URL = "https://jsonplaceholder.typicode.com/posts"
     COMMENT'S API
 */
 export const FETCH_COMMENTS_URL = "https://jsonplaceholder.typicode.com/comments"
+export const FETCH_SPEC_COMMENT_URL = "https://jsonplaceholder.typicode.com/comments?postId="

@@ -20,6 +20,11 @@ class BlogForm extends Component{
         const { title, body } = this.state;
 
         this.props.addPost(title,body)
+        
+        this.setState({
+            title: '',
+            body: ''
+        })
     }
 
     render(){

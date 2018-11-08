@@ -3,6 +3,7 @@ import CommentLists from "../components/CommentLists"
 import CommentFilter from "../components/CommentFilter"
 import axios from "axios";
 import { FETCH_COMMENTS_URL } from "../api";
+import Navigation from "../components/Navigation"
 
 class Comment extends Component {
 
@@ -79,6 +80,7 @@ class Comment extends Component {
 
         return(
             <div className="container mt-5">
+                <Navigation />
                 <h1 className="text-center"> All Comments </h1>
                 <form onSubmit={this.submit} className="mt-5">
                     <input

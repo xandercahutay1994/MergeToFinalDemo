@@ -9,7 +9,7 @@ import {
     Link,
     Route
 } from "react-router-dom"
-
+import Routes from "../Routes"
 
 class App extends React.PureComponent{
     constructor(){
@@ -55,16 +55,13 @@ class App extends React.PureComponent{
         return(
             <Router>
                 <div className="container">
-                    {/* {
+                    
+                    {
                         !isAuthenticated ?
                             <Login getUser={this.checkIfUser} isUser={isUser}/>
                         :
-                            <Blogs />
-                    } */}
-                    <Blogs />
-                    {/* <Comment /> */}
-                    <Route path="/blogs" component={Blogs}/>
-                    <Route path="/comment" component={Comment} />
+                            <Routes />
+                    }
                     
                 </div>
             </Router>

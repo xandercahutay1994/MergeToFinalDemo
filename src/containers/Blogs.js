@@ -108,6 +108,7 @@ class Blogs extends Component{
 
         return (
             <div className="mt-5">
+                <Navigation />
                 <h1 className="mb-5 text-center text-primary"> Blog Posts </h1>
                 <BLogForm 
                     disableBtn={isFetching} 

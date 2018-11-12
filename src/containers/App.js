@@ -1,6 +1,4 @@
-import React, {Component} from "react";
-import axios from "axios"
-import { FETCH_USERS_URL } from "../api"
+import React, { PureComponent } from "react";
 import Login from "./Login";
 import Blogs from "./Blogs";
 import Comment from "./Comment";
@@ -10,63 +8,33 @@ import {
     Route
 } from "react-router-dom"
 import Routes from "../Routes"
+import { connect } from "react-redux"
 
-class App extends React.PureComponent{
-    constructor(){
-        super()
-        this.state = {
-            isAuthenticated: false,
-            isUser: ''
-        }
-    }
-
-    checkIfUser = async(username,email) => {
-        let isMatch = false;
-
-        try{
-            const result = await axios.get(FETCH_USERS_URL);
-            let users = result.data;
-
-            for(let user of users){
-                // if(user.username == username && user.email == email)
-                if(username == "admin" && email == "admin")
-                    isMatch = true
-            }
-        }catch(e){
-            console.log(e)
-        }
-
-        if(isMatch){
-            this.setState({
-                username: '',
-                email: '',
-                isAuthenticated: true,
-                isUser: true
-            })
-        }else{
-            this.setState({ isUser: false })
-
-        }
-    }
-
+class App extends PureComponent{
+   
     render(){
-        const { isAuthenticated, isUser } = this.state;
-
+        const { isAuthenticated } = this.props;
         return(
             <Router>
                 <div className="container">
-                    
-                    {
-                        !isAuthenticated ?
-                            <Login getUser={this.checkIfUser} isUser={isUser}/>
-                        :
+                    {/* {
+                        isAuthenticated ?
                             <Routes />
-                    }
-                    
+                        :   
+                            <Login />
+                    } */}
+                    <Comment />
                 </div>
             </Router>
         )
     }
 }
 
-export default App;
+const mapStateToProps = state => {
+    console.log(state.user.isAuthenticated)
+    return {
+        isAuthenticated: state.user.isAuthenticated
+    }
+}
+
+export default connect(mapStateToProps)(App)

@@ -1,4 +1,8 @@
 import React, {Component} from "react"
+import { connect } from "react-redux"
+import {
+    LOGIN_USER_ACTION
+} from "../redux/actions/user"
 
 class Login extends Component{
    
@@ -6,8 +10,7 @@ class Login extends Component{
         super(props)
         this.state = {
             username: '',
-            email: '',
-            isAuthenticated: false
+            email: ''
         }
     }
 
@@ -22,12 +25,17 @@ class Login extends Component{
     submit = (e) => {
         e.preventDefault();
         const { username, email } = this.state;
-
-        this.props.getUser(username,email)
+        const userData = {
+            username,
+            email
+        }
+        this.props.loginUser(userData)
     }
 
     notAUser(){
-        return <div> <h3> Email/Username is incorrect! </h3></div>
+        if(this.props.isAuthenticated === false){
+            return <h5 className="text-center text-danger"> Email/Username is incorrect! </h5>
+        }
     }
 
     render(){
@@ -65,7 +73,7 @@ class Login extends Component{
                                 />
                             </label>
                         </div>
-
+                        {this.notAUser()}
                         <button className="btn btn-primary btn-block mt-2">
                             <i className="fa fa-sign-in"></i>  Login 
                         </button>
@@ -77,4 +85,18 @@ class Login extends Component{
     }
 }
 
-export default Login;
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.user.isAuthenticated
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        loginUser: (userData) => {
+            dispatch(LOGIN_USER_ACTION(userData))
+        }
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login);
